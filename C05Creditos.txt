@@ -1,0 +1,750 @@
+
+R version 4.3.3 (2024-02-29) -- "Angel Food Cake"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: aarch64-apple-darwin20 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[R.app GUI 1.80 (8340) aarch64-apple-darwin20]
+
+[Workspace restored from /Users/marceparra/.RData]
+[History restored from /Users/marceparra/.Rapp.history]
+
+> > set.seed(12345) > credit_rand <- credit[order(runif(1000)), ]
+Error: unexpected '>' in ">"
+> > set.seed(12345) > credit_rand = credit[order(runif(1000)), ]
+Error: unexpected '>' in ">"
+> set.seed(12345)
+> credit_rand <- credit[order(runif(1000)), ]
+Error: object 'credit' not found
+> data("Boston")
+Warning message:
+In data("Boston") : data set ‘Boston’ not found
+> datos = Boston
+> head(datos, 3)
+     crim zn indus chas   nox    rm  age    dis rad tax ptratio  black lstat medv
+1 0.00632 18  2.31    0 0.538 6.575 65.2 4.0900   1 296    15.3 396.90  4.98 24.0
+2 0.02731  0  7.07    0 0.469 6.421 78.9 4.9671   2 242    17.8 396.90  9.14 21.6
+3 0.02729  0  7.07    0 0.469 7.185 61.1 4.9671   2 242    17.8 392.83  4.03 34.7
+> library(modeldata)
+Error in library(modeldata) : there is no package called ‘modeldata’
+> data(credit_data)
+Warning message:
+In data(credit_data) : data set ‘credit_data’ not found
+> library(C50)
+Error in library(C50) : there is no package called ‘C50’
+> library(caret)
+Loading required package: ggplot2
+Loading required package: lattice
+> library(tidyverse)
+── Attaching core tidyverse packages ───────────────────────────────────────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ lubridate 1.9.3     ✔ tibble    3.2.1
+✔ purrr     1.0.2     ✔ tidyr     1.3.1
+── Conflicts ─────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+✖ purrr::lift()   masks caret::lift()
+ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+> 
+> library(C50)
+Error in library(C50) : there is no package called ‘C50’
+> library(caret)
+> library(tidyverse)
+> 
+> #El conjunto de datos de crédito incluye 1000 ejemplos de préstamos, más un conjunto de variables numéricas y nominales que #indican las características del préstamo y del solicitante del préstamo. 
+> 
+> archivo = "https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/credit.csv"
+> file <- download.file(archivo, destfile = "credit.csv")
+trying URL 'https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/credit.csv'
+Content type 'text/plain; charset=utf-8' length 133638 bytes (130 KB)
+==================================================
+downloaded 130 KB
+
+> data <- read.csv("credit.csv", stringsAsFactors = T)
+> 
+> library(C50)
+Error in library(C50) : there is no package called ‘C50’
+> library(caret)
+> library(tidyverse)
+> 
+> #El conjunto de datos de crédito incluye 1000 ejemplos de préstamos,
+> 
+> archivo = "https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/credit.csv"
+> file <- download.file(archivo, destfile = "credit.csv")
+trying URL 'https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/credit.csv'
+Content type 'text/plain; charset=utf-8' length 133638 bytes (130 KB)
+==================================================
+downloaded 130 KB
+
+> data <- read.csv("credit.csv", stringsAsFactors = T)
+> 
+> #Analisis exploratorio
+> data$default <- factor(data$default, levels = c(2,1), labels = c("yes", "no"))
+> table(data$default)
+
+yes  no 
+300 700 
+> 
+> # par de características que podrían predecir el incumplimiento del pago
+> summary(data$months_loan_duration)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    4.0    12.0    18.0    20.9    24.0    72.0 
+> summary(data$amount)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    250    1366    2320    3271    3972   18424 
+> 
+> #division de datos 
+> set.seed(123)
+> training_sample <- sample(1000, 900)
+> data_training <- data[training_sample,]
+> data_test <- data[-training_sample,]
+> library(C50)
+Error in library(C50) : there is no package called ‘C50’
+> library(caret)
+> library(tidyverse)
+> 
+> #El conjunto de datos de crédito incluye 1000 ejemplos de préstamos,
+> 
+> archivo = "https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/credit.csv"
+> file <- download.file(archivo, destfile = "credit.csv")
+trying URL 'https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/credit.csv'
+Content type 'text/plain; charset=utf-8' length 133638 bytes (130 KB)
+==================================================
+downloaded 130 KB
+
+> data <- read.csv("credit.csv", stringsAsFactors = T)
+> 
+> #Analisis exploratorio
+> data$default <- factor(data$default, levels = c(2,1), labels = c("yes", "no"))
+> table(data$default)
+
+yes  no 
+300 700 
+> 
+> # par de características que podrían predecir el incumplimiento del pago
+> summary(data$months_loan_duration)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    4.0    12.0    18.0    20.9    24.0    72.0 
+> summary(data$amount)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    250    1366    2320    3271    3972   18424 
+> 
+> #division de datos 
+> set.seed(123)
+> training_sample <- sample(1000, 900)
+> data_training <- data[training_sample,]
+> data_test <- data[-training_sample,]
+> 
+> prop.table(table(data_training$default))
+
+      yes        no 
+0.2944444 0.7055556 
+> prop.table(table(data_test$default))
+
+ yes   no 
+0.35 0.65 
+> 
+> #ajuste del modelo
+> modeloc50 <- C5.0(data_training[-17], data_training$default) 
+Error in C5.0(data_training[-17], data_training$default) : 
+  could not find function "C5.0"
+> summary(modeloc50)
+Error: object 'modeloc50' not found
+> 
+> #Evaluacion del modelo 
+> data_predicted <- predict(modeloc50, data_test)
+Error: object 'modeloc50' not found
+> confusionMatrix(data = data_predicted, reference = data_test$default, positive = "yes")
+Error: object 'data_predicted' not found
+> 
+> #Mejora del Modelo
+> modeloc50_1 <- C5.0(data_training[-17], data_training$default, trials = 10) 
+Error in C5.0(data_training[-17], data_training$default, trials = 10) : 
+  could not find function "C5.0"
+> data_predicted2 <- predict(modeloc50_1, data_test)
+Error: object 'modeloc50_1' not found
+> confusionMatrix(data = data_predicted2, reference = data_test$default, positive = "yes")
+Error: object 'data_predicted2' not found
+> 
+> #matriz de costo
+> matrix_dimensions <- list(c("yes", "no"), c("yes", "no"))
+> names(matrix_dimensions) <- c("prediction", "reference")
+> error_cost <- matrix(c(0, 4, 1, 0), nrow = 2, dimnames = matrix_dimensions)
+> error_cost
+          reference
+prediction yes no
+       yes   0  1
+       no    4  0
+> 
+> #Matriz de confusion
+> modeloc50_costs <- C5.0(data_training[-17], data_training$default, costs = error_cost) 
+Error in C5.0(data_training[-17], data_training$default, costs = error_cost) : 
+  could not find function "C5.0"
+> data_predicted_costs <- predict(modeloc50_costs, data_test)
+Error: object 'modeloc50_costs' not found
+> confusionMatrix(data = data_predicted_costs, reference = data_test$default, positive = "yes")
+Error: object 'data_predicted_costs' not found
+> 
+> 
+> data_predicted_costs <- predict(modeloc50_costs, data_test)
+Error: object 'modeloc50_costs' not found
+> 
+> #Matriz de confusion
+> modeloc50_costs <- C5.0(data_training[-17], data_training$default, costs = error_cost) 
+Error in C5.0(data_training[-17], data_training$default, costs = error_cost) : 
+  could not find function "C5.0"
+> data_predicted_costs <- predict(modeloc50_costs, data_test)
+Error: object 'modeloc50_costs' not found
+> confusionMatrix(data = data_predicted_costs, reference = data_test$default, positive = "yes")
+Error: object 'data_predicted_costs' not found
+> 
+> 
+> library(C50)
+Error in library(C50) : there is no package called ‘C50’
+> library(caret)
+> library(tidyverse)
+> 
+> #El conjunto de datos de crédito incluye 1000 ejemplos de préstamos,
+> 
+> archivo = "https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/credit.csv"
+> file <- download.file(archivo, destfile = "credit.csv")
+trying URL 'https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/credit.csv'
+Content type 'text/plain; charset=utf-8' length 133638 bytes (130 KB)
+==================================================
+downloaded 130 KB
+
+> data <- read.csv("credit.csv", stringsAsFactors = T)
+> 
+> #Analisis exploratorio
+> data$default <- factor(data$default, levels = c(2,1), labels = c("yes", "no"))
+> table(data$default)
+
+yes  no 
+300 700 
+> 
+> # par de características que podrían predecir el incumplimiento del pago
+> summary(data$months_loan_duration)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    4.0    12.0    18.0    20.9    24.0    72.0 
+> summary(data$amount)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    250    1366    2320    3271    3972   18424 
+> 
+> #division de datos 
+> set.seed(123)
+> training_sample <- sample(1000, 900)
+> data_training <- data[training_sample,]
+> data_test <- data[-training_sample,]
+> 
+> prop.table(table(data_training$default))
+
+      yes        no 
+0.2944444 0.7055556 
+> prop.table(table(data_test$default))
+
+ yes   no 
+0.35 0.65 
+> 
+> #ajuste del modelo
+> modeloc50 <- C5.0(data_training[-17], data_training$default) 
+Error in C5.0(data_training[-17], data_training$default) : 
+  could not find function "C5.0"
+> summary(modeloc50)
+Error: object 'modeloc50' not found
+> 
+> #Evaluacion del modelo 
+> data_predicted <- predict(modeloc50, data_test)
+Error: object 'modeloc50' not found
+> confusionMatrix(data = data_predicted, reference = data_test$default, positive = "yes")
+Error: object 'data_predicted' not found
+> 
+> #Mejora del Modelo
+> modeloc50_1 <- C5.0(data_training[-17], data_training$default, trials = 10) 
+Error in C5.0(data_training[-17], data_training$default, trials = 10) : 
+  could not find function "C5.0"
+> data_predicted2 <- predict(modeloc50_1, data_test)
+Error: object 'modeloc50_1' not found
+> confusionMatrix(data = data_predicted2, reference = data_test$default, positive = "yes")
+Error: object 'data_predicted2' not found
+> 
+> #matriz de costo
+> matrix_dimensions <- list(c("yes", "no"), c("yes", "no"))
+> names(matrix_dimensions) <- c("prediction", "reference")
+> error_cost <- matrix(c(0, 4, 1, 0), nrow = 2, dimnames = matrix_dimensions)
+> error_cost
+          reference
+prediction yes no
+       yes   0  1
+       no    4  0
+> # Instalar las librerías
+> install.packages("C50")
+Installing package into ‘/Users/marceparra/Library/R/arm64/4.3/library’
+(as ‘lib’ is unspecified)
+also installing the dependencies ‘libcoin’, ‘mvtnorm’, ‘Formula’, ‘inum’, ‘Cubist’, ‘partykit’
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/libcoin_1.0-10.tgz'
+Content type 'application/x-gzip' length 904871 bytes (883 KB)
+==================================================
+downloaded 883 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/mvtnorm_1.2-5.tgz'
+Content type 'application/x-gzip' length 825902 bytes (806 KB)
+==================================================
+downloaded 806 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/Formula_1.2-5.tgz'
+Content type 'application/x-gzip' length 158382 bytes (154 KB)
+==================================================
+downloaded 154 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/inum_1.0-5.tgz'
+Content type 'application/x-gzip' length 37019 bytes (36 KB)
+==================================================
+downloaded 36 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/Cubist_0.4.4.tgz'
+Content type 'application/x-gzip' length 989974 bytes (966 KB)
+==================================================
+downloaded 966 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/partykit_1.2-21.tgz'
+Content type 'application/x-gzip' length 2408451 bytes (2.3 MB)
+==================================================
+downloaded 2.3 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/C50_0.1.8.tgz'
+Content type 'application/x-gzip' length 482252 bytes (470 KB)
+==================================================
+downloaded 470 KB
+
+
+The downloaded binary packages are in
+	/var/folders/pt/jz53jhrn279bwh0c_2635y1m0000gn/T//Rtmp8zCEa4/downloaded_packages
+> install.packages("caret")
+Installing package into ‘/Users/marceparra/Library/R/arm64/4.3/library’
+(as ‘lib’ is unspecified)
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/caret_6.0-94.tgz'
+Content type 'application/x-gzip' length 3586369 bytes (3.4 MB)
+==================================================
+downloaded 3.4 MB
+
+
+The downloaded binary packages are in
+	/var/folders/pt/jz53jhrn279bwh0c_2635y1m0000gn/T//Rtmp8zCEa4/downloaded_packages
+> install.packages("tidyverse")
+Installing package into ‘/Users/marceparra/Library/R/arm64/4.3/library’
+(as ‘lib’ is unspecified)
+also installing the dependencies ‘sys’, ‘askpass’, ‘blob’, ‘DBI’, ‘gargle’, ‘uuid’, ‘ids’, ‘openssl’, ‘systemfonts’, ‘textshaping’, ‘selectr’, ‘conflicted’, ‘dbplyr’, ‘dtplyr’, ‘googledrive’, ‘googlesheets4’, ‘httr’, ‘modelr’, ‘ragg’, ‘reprex’, ‘rvest’
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/sys_3.4.2.tgz'
+Content type 'application/x-gzip' length 51136 bytes (49 KB)
+==================================================
+downloaded 49 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/askpass_1.2.0.tgz'
+Content type 'application/x-gzip' length 24802 bytes (24 KB)
+==================================================
+downloaded 24 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/blob_1.2.4.tgz'
+Content type 'application/x-gzip' length 46351 bytes (45 KB)
+==================================================
+downloaded 45 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/DBI_1.2.3.tgz'
+Content type 'application/x-gzip' length 900472 bytes (879 KB)
+==================================================
+downloaded 879 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/gargle_1.5.2.tgz'
+Content type 'application/x-gzip' length 772073 bytes (753 KB)
+==================================================
+downloaded 753 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/uuid_1.2-0.tgz'
+Content type 'application/x-gzip' length 74586 bytes (72 KB)
+==================================================
+downloaded 72 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/ids_1.0.1.tgz'
+Content type 'application/x-gzip' length 119948 bytes (117 KB)
+==================================================
+downloaded 117 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/openssl_2.2.0.tgz'
+Content type 'application/x-gzip' length 3798092 bytes (3.6 MB)
+==================================================
+downloaded 3.6 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/systemfonts_1.1.0.tgz'
+Content type 'application/x-gzip' length 6588720 bytes (6.3 MB)
+==================================================
+downloaded 6.3 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/textshaping_0.4.0.tgz'
+Content type 'application/x-gzip' length 6120444 bytes (5.8 MB)
+==================================================
+downloaded 5.8 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/selectr_0.4-2.tgz'
+Content type 'application/x-gzip' length 488581 bytes (477 KB)
+==================================================
+downloaded 477 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/conflicted_1.2.0.tgz'
+Content type 'application/x-gzip' length 55127 bytes (53 KB)
+==================================================
+downloaded 53 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/dbplyr_2.5.0.tgz'
+Content type 'application/x-gzip' length 1234793 bytes (1.2 MB)
+==================================================
+downloaded 1.2 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/dtplyr_1.3.1.tgz'
+Content type 'application/x-gzip' length 353722 bytes (345 KB)
+==================================================
+downloaded 345 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/googledrive_2.1.1.tgz'
+Content type 'application/x-gzip' length 1892342 bytes (1.8 MB)
+==================================================
+downloaded 1.8 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/googlesheets4_1.1.1.tgz'
+Content type 'application/x-gzip' length 510202 bytes (498 KB)
+==================================================
+downloaded 498 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/httr_1.4.7.tgz'
+Content type 'application/x-gzip' length 474567 bytes (463 KB)
+==================================================
+downloaded 463 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/modelr_0.1.11.tgz'
+Content type 'application/x-gzip' length 202593 bytes (197 KB)
+==================================================
+downloaded 197 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/ragg_1.3.2.tgz'
+Content type 'application/x-gzip' length 10898117 bytes (10.4 MB)
+==================================================
+downloaded 10.4 MB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/reprex_2.1.1.tgz'
+Content type 'application/x-gzip' length 493400 bytes (481 KB)
+==================================================
+downloaded 481 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/rvest_1.0.4.tgz'
+Content type 'application/x-gzip' length 297772 bytes (290 KB)
+==================================================
+downloaded 290 KB
+
+trying URL 'https://mirror.las.iastate.edu/CRAN/bin/macosx/big-sur-arm64/contrib/4.3/tidyverse_2.0.0.tgz'
+Content type 'application/x-gzip' length 428470 bytes (418 KB)
+==================================================
+downloaded 418 KB
+
+
+The downloaded binary packages are in
+	/var/folders/pt/jz53jhrn279bwh0c_2635y1m0000gn/T//Rtmp8zCEa4/downloaded_packages
+> 
+> #Llamar a las librerias 
+> library(C50)
+> library(caret)
+> library(tidyverse)
+> #El conjunto de datos de crédito incluye 1000 ejemplos de préstamos,
+> 
+> archivo = "https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/credit.csv"
+> file <- download.file(archivo, destfile = "credit.csv")
+trying URL 'https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/credit.csv'
+Content type 'text/plain; charset=utf-8' length 133638 bytes (130 KB)
+==================================================
+downloaded 130 KB
+
+> data <- read.csv("credit.csv", stringsAsFactors = T)
+> 
+> #Analisis exploratorio
+> data$default <- factor(data$default, levels = c(2,1), labels = c("yes", "no"))
+> table(data$default)
+
+yes  no 
+300 700 
+> # par de características que podrían predecir el incumplimiento del pago
+> summary(data$months_loan_duration)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    4.0    12.0    18.0    20.9    24.0    72.0 
+> summary(data$amount)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    250    1366    2320    3271    3972   18424 
+> #division de datos 
+> set.seed(123)
+> training_sample <- sample(1000, 900)
+> data_training <- data[training_sample,]
+> data_test <- data[-training_sample,]
+> 
+> prop.table(table(data_training$default))
+
+      yes        no 
+0.2944444 0.7055556 
+> prop.table(table(data_test$default))
+
+ yes   no 
+0.35 0.65 
+> 
+> #ajuste del modelo
+> modeloc50 <- C5.0(data_training[-17], data_training$default) 
+> summary(modeloc50)
+
+Call:
+C5.0.default(x = data_training[-17], y = data_training$default)
+
+
+C5.0 [Release 2.07 GPL Edition]  	Sun Jul 21 20:11:55 2024
+-------------------------------
+
+Class specified by attribute `outcome'
+
+Read 900 cases (21 attributes) from undefined.data
+
+Decision tree:
+
+checking_balance in {> 200 DM,unknown}: no (412/54)
+checking_balance in {< 0 DM,1 - 200 DM}:
+:...credit_history in {fully repaid,fully repaid this bank}:
+    :...housing = rent: yes (16/1)
+    :   housing = for free:
+    :   :...other_debtors = co-applicant: no (2)
+    :   :   other_debtors in {guarantor,none}: yes (12/1)
+    :   housing = own:
+    :   :...purpose in {business,car (used),retraining}: no (10/2)
+    :       purpose in {domestic appliances,education,others,radio/tv,
+    :       :           repairs}: yes (6/1)
+    :       purpose = car (new):
+    :       :...months_loan_duration <= 22: yes (6)
+    :       :   months_loan_duration > 22: no (2)
+    :       purpose = furniture:
+    :       :...installment_plan = bank: yes (5/1)
+    :           installment_plan in {none,stores}: no (4)
+    credit_history in {critical,delayed,repaid}:
+    :...months_loan_duration <= 15: no (180/45)
+        months_loan_duration > 15:
+        :...savings_balance in {> 1000 DM,unknown}:
+            :...credit_history in {critical,delayed}: no (14)
+            :   credit_history = repaid:
+            :   :...purpose in {business,domestic appliances,education,others,
+            :       :           repairs,retraining}: no (5)
+            :       purpose = car (new): yes (7/1)
+            :       purpose = car (used):
+            :       :...amount <= 6967: no (4)
+            :       :   amount > 6967: yes (2)
+            :       purpose = furniture:
+            :       :...age <= 27: yes (2)
+            :       :   age > 27: no (5)
+            :       purpose = radio/tv:
+            :       :...amount <= 6110: no (5)
+            :           amount > 6110: yes (2)
+            savings_balance in {< 100 DM,101 - 500 DM,501 - 1000 DM}:
+            :...months_loan_duration > 47: yes (23/3)
+                months_loan_duration <= 47:
+                :...employment_length = 0 - 1 yrs:
+                    :...residence_history <= 1: no (16/6)
+                    :   residence_history > 1: yes (27/6)
+                    employment_length = unemployed:
+                    :...residence_history <= 2: yes (7)
+                    :   residence_history > 2: no (12/2)
+                    employment_length = > 7 yrs:
+                    :...purpose = car (new): yes (11/3)
+                    :   purpose in {car (used),domestic appliances,education,
+                    :   :           others,radio/tv,repairs,
+                    :   :           retraining}: no (13/1)
+                    :   purpose = business:
+                    :   :...personal_status in {divorced male,female,
+                    :   :   :                   married male}: yes (3)
+                    :   :   personal_status = single male: no (3)
+                    :   purpose = furniture:
+                    :   :...job = mangement self-employed: yes (2)
+                    :       job in {skilled employee,unemployed non-resident,
+                    :               unskilled resident}: no (5/1)
+                    employment_length = 1 - 4 yrs:
+                    :...installment_rate > 3: yes (20/3)
+                    :   installment_rate <= 3:
+                    :   :...other_debtors = co-applicant: yes (3)
+                    :       other_debtors = guarantor: no (2)
+                    :       other_debtors = none:
+                    :       :...checking_balance = 1 - 200 DM: no (8/1)
+                    :           checking_balance = < 0 DM: [S1]
+                    employment_length = 4 - 7 yrs:
+                    :...savings_balance in {101 - 500 DM,
+                        :                   501 - 1000 DM}: no (8)
+                        savings_balance = < 100 DM:
+                        :...job in {mangement self-employed,
+                            :       unemployed non-resident,
+                            :       unskilled resident}: no (6)
+                            job = skilled employee:
+                            :...dependents > 1: no (3/1)
+                                dependents <= 1:
+                                :...months_loan_duration <= 22: no (3)
+                                    months_loan_duration > 22: yes (8)
+
+SubTree [S1]
+
+personal_status in {divorced male,married male}: no (3)
+personal_status in {female,single male}: yes (13/3)
+
+
+Evaluation on training data (900 cases):
+
+	    Decision Tree   
+	  ----------------  
+	  Size      Errors  
+
+	    42  136(15.1%)   <<
+
+
+	   (a)   (b)    <-classified as
+	  ----  ----
+	   152   113    (a): class yes
+	    23   612    (b): class no
+
+
+	Attribute usage:
+
+	100.00%	checking_balance
+	 54.22%	credit_history
+	 48.11%	months_loan_duration
+	 27.22%	savings_balance
+	 19.56%	employment_length
+	 11.33%	purpose
+	  7.00%	housing
+	  6.89%	residence_history
+	  5.44%	installment_rate
+	  4.78%	other_debtors
+	  3.00%	job
+	  2.44%	personal_status
+	  1.56%	dependents
+	  1.44%	amount
+	  1.00%	installment_plan
+	  0.78%	age
+
+
+Time: 0.0 secs
+
+> #Evaluacion del modelo 
+> data_predicted <- predict(modeloc50, data_test)
+> confusionMatrix(data = data_predicted, reference = data_test$default, positive = "yes")
+Confusion Matrix and Statistics
+
+          Reference
+Prediction yes no
+       yes  13 10
+       no   22 55
+                                          
+               Accuracy : 0.68            
+                 95% CI : (0.5792, 0.7698)
+    No Information Rate : 0.65            
+    P-Value [Acc > NIR] : 0.30288         
+                                          
+                  Kappa : 0.2363          
+                                          
+ Mcnemar's Test P-Value : 0.05183         
+                                          
+            Sensitivity : 0.3714          
+            Specificity : 0.8462          
+         Pos Pred Value : 0.5652          
+         Neg Pred Value : 0.7143          
+             Prevalence : 0.3500          
+         Detection Rate : 0.1300          
+   Detection Prevalence : 0.2300          
+      Balanced Accuracy : 0.6088          
+                                          
+       'Positive' Class : yes             
+                                          
+> #Mejora del Modelo
+> modeloc50_1 <- C5.0(data_training[-17], data_training$default, trials = 10) 
+> data_predicted2 <- predict(modeloc50_1, data_test)
+> confusionMatrix(data = data_predicted2, reference = data_test$default, positive = "yes")
+Confusion Matrix and Statistics
+
+          Reference
+Prediction yes no
+       yes  18  6
+       no   17 59
+                                          
+               Accuracy : 0.77            
+                 95% CI : (0.6751, 0.8483)
+    No Information Rate : 0.65            
+    P-Value [Acc > NIR] : 0.00662         
+                                          
+                  Kappa : 0.455           
+                                          
+ Mcnemar's Test P-Value : 0.03706         
+                                          
+            Sensitivity : 0.5143          
+            Specificity : 0.9077          
+         Pos Pred Value : 0.7500          
+         Neg Pred Value : 0.7763          
+             Prevalence : 0.3500          
+         Detection Rate : 0.1800          
+   Detection Prevalence : 0.2400          
+      Balanced Accuracy : 0.7110          
+                                          
+       'Positive' Class : yes             
+                                          
+> #matriz de costo
+> matrix_dimensions <- list(c("yes", "no"), c("yes", "no"))
+> names(matrix_dimensions) <- c("prediction", "reference")
+> error_cost <- matrix(c(0, 4, 1, 0), nrow = 2, dimnames = matrix_dimensions)
+> error_cost
+          reference
+prediction yes no
+       yes   0  1
+       no    4  0
+> #Matriz de confusion
+> modeloc50_costs <- C5.0(data_training[-17], data_training$default, costs = error_cost) 
+> data_predicted_costs <- predict(modeloc50_costs, data_test)
+> confusionMatrix(data = data_predicted_costs, reference = data_test$default, positive = "yes")
+Confusion Matrix and Statistics
+
+          Reference
+Prediction yes no
+       yes  27 22
+       no    8 43
+                                          
+               Accuracy : 0.7             
+                 95% CI : (0.6002, 0.7876)
+    No Information Rate : 0.65            
+    P-Value [Acc > NIR] : 0.17302         
+                                          
+                  Kappa : 0.3964          
+                                          
+ Mcnemar's Test P-Value : 0.01762         
+                                          
+            Sensitivity : 0.7714          
+            Specificity : 0.6615          
+         Pos Pred Value : 0.5510          
+         Neg Pred Value : 0.8431          
+             Prevalence : 0.3500          
+         Detection Rate : 0.2700          
+   Detection Prevalence : 0.4900          
+      Balanced Accuracy : 0.7165          
+                                          
+       'Positive' Class : yes             
+                                          
+> 
+> 
